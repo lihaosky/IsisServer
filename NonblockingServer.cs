@@ -84,7 +84,12 @@ namespace IsisService {
 		       		}
 		       		
 		       		List<string> replyList = new List<string>();
-		       		string toSend = Encoding.ASCII.GetString(so.recvBuffer, 0, so.totalReceived - 2);
+		       		string toSend = "";
+		       		if (commandType == IsisServer.INSERT) {
+		       			toSend = Encoding.ASCII.GetString(so.recvBuffer, 8, so.totalReceived - 2);
+		       		} else {
+		       			toSend = Encoding.ASCII.GetString(so.recvBuffer, 5, so.totalReceived - 2);
+		       		}
 		       		
 		       		int nr = shardGroup[0].Query(Isis.Group.ALL, timeout, commandType, toSend, shardGroup[0].GetView().GetMyRank(), new EOLMarker(), replyList);
 		       		
