@@ -26,7 +26,7 @@ while [ $i -lt $nodenum ]
 do
 echo "Lauch job on ${words[$i]}"
 # Launch job
-ssh -f ${words[$i]}  "cd  ~/Utils/C#_TCP; ~/bin/bin/mono IsisServer.exe -n $nodenum -s $shardsize -r $i -v 2>&1"
+ssh -f ${words[$i]}  "cd  ~/IsisServer; ~/bin/bin/mono IsisServer.exe -n $nodenum -s $shardsize -r $i -v 2>&1"
 ssh -f ${words[$i]}  "cd ~/memcached; ./memcached -q 1234 -vv 2>&1"
 ((i=$i+1))
 done
