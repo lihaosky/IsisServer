@@ -32,7 +32,7 @@ namespace IsisService {
 		    Console.WriteLine("Waiting for a connection...");
 
 		    server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		    IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, 1234);
+		    IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, Parameter.portNum);
 		    server.Bind(ipLocal);
 		    server.Listen(10);
 		    server.BeginAccept(new AsyncCallback(DoAcceptSocketCallback), server);
