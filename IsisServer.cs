@@ -11,11 +11,9 @@ using Isis;
 
 //Works but quite lousy design!!!
 namespace IsisService {
-	delegate void insert(string command, int rank);
-	delegate void query(string command, int rank);
+	delegate void insert(string command, int rank);  //Callback for insert
+	delegate void query(string command, int rank);   //Callback for get
 	
-
-
 	//Main class
 	class MainClass {
 		//Main
@@ -24,31 +22,48 @@ namespace IsisService {
 			int nodeNum = -1;
 			int myRank = -1;
 			int shardSize = -1;
+			bool isBlock = false;
 			
 			while (i < args.Length) {
 				//port number
 				if (args[i] == "-p") {
 					Parameter.portNum = Int32.Parse(args[++i]);
 					i++;
-				} else if (args[i] == "-v") {
+				}
+				//If verbose 
+				else if (args[i] == "-v") {
 					Parameter.isVerbose = true;
 					i++;
-				} else if (args[i] == "-n") {
+				}
+				//Node number 
+				else if (args[i] == "-n") {
 					nodeNum = Int32.Parse(args[++i]);
 					i++;
-				} else if (args[i] == "-r") {
+				}
+				//My rank 
+				else if (args[i] == "-r") {
 					myRank = Int32.Parse(args[++i]);
 					i++;
-				} else if (args[i] == "-s") {
+				}
+				//Shard size 
+				else if (args[i] == "-s") {
 					shardSize = Int32.Parse(args[++i]);
 					i++;
-				} else if (args[i] == "-t") {
+				}
+				//Timeout 
+				else if (args[i] == "-t") {
 					IsisServer.timeout = Int32.Parse(args[++i]);
 					i++;
-				} else if (args[i] == "-m") {
+				}
+				//Memcached port 
+				else if (args[i] == "-m") {
 					Parameter.memPortNum = Int32.Parse(args[++i]);
 					i++;
-				} else {
+				} 
+				else if (args[i] == "-b") {
+					isBlock = true;
+				}
+				else {
 					Console.WriteLine("Unknown argument!");
 					Parameter.printUsage();
 					return 0;
@@ -81,8 +96,15 @@ namespace IsisService {
 			IsisServer isisServer = new IsisServer(nodeNum, shardSize, myRank);
 			isisServer.createGroup();
 			while (isisServer.allJoin == false);
-			SynchronousSocketListener.shardGroup = isisServer.shardGroup;
-			SynchronousSocketListener.StartListening();
+			
+			if (isBlock) {
+				SynchronousSocketListener.shardGroup = isisServer.shardGroup;
+				SynchronousSocketListener.StartListening();
+			} else {
+				NonblockingServer.shardGroup = isisServer.shardGroup;
+				NonblockingServer.doBeginAcceptSocket();
+				NonblockingServer.clientConnected.WaitOne();
+			}
 			return 0;
 	  	}
 	}
