@@ -62,6 +62,7 @@ namespace IsisService {
 				} 
 				else if (args[i] == "-b") {
 					isBlock = true;
+					i++;
 				}
 				else {
 					Console.WriteLine("Unknown argument!");
