@@ -48,6 +48,8 @@ int main(int argc, char **argv) {
 	class = mono_class_from_name(image, "IsisService", "IsisServer");
 	
 	while ((m = mono_class_get_methods(class, &iter))) {
+	    	printf("Method %s\n", mono_method_get_name(m));
+
 		if (strcmp(mono_method_get_name(m), "createGroup") == 0) {
 			mmethod = m;
 			break;
@@ -58,7 +60,7 @@ int main(int argc, char **argv) {
 	args[1] = &shardSize;
 	args[2] = &myRank;
 	
-	mono_runtime_invoke(mmethod, NULL, args, NULL);
+//	mono_runtime_invoke(mmethod, NULL, args, NULL);
 	
 	printf("Here\n");	
 }
