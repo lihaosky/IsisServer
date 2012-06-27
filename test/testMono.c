@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 	args[1] = &shardSize;
 	args[2] = &myRank;
 	
-//	mono_runtime_invoke(mmethod, NULL, args, NULL);
+	mono_runtime_invoke(mmethod, NULL, args, NULL);
 	
 	printf("Here\n");	
 }
