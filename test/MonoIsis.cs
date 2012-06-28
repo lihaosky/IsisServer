@@ -147,6 +147,7 @@ namespace IsisService {
 	  	}
 	  	
 	  	public static void Main(string[] args) {
+		    createGroup(1, 1, 0);
 	  	}
 	  		
 	}

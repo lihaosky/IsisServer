@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
 	
 	file = argv[1];
 	domain = mono_jit_init(file);
+	mono_config_parse(NULL);
 	assembly = mono_domain_assembly_open(domain, file);
 	if (!assembly) {
 		fprintf(stderr, "Fail to open assembly!\n");
