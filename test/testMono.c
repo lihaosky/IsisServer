@@ -17,7 +17,6 @@
 
 int agc;
 char **agv;
-void *args[3];
 int nodeNum = 1;
 int shardSize = 1;
 int myRank = 0;
@@ -25,12 +24,13 @@ MonoDomain *domain;
 MonoAssembly *assembly;
 MonoImage *image;
 MonoClass *class;
-MonoMethodDesc *mdesc;
-MonoMethod *mmethod, *m;
 const char *file;
 void *iter;
 
 void* isis_start() {
+	MonoMethod *m, *mmethod;
+	void *args[3];
+	
 	domain = mono_jit_init(file);
 	mono_config_parse(NULL);
 	assembly = mono_domain_assembly_open(domain, file);
@@ -58,6 +58,25 @@ void* isis_start() {
 	mono_runtime_invoke(mmethod, NULL, args, NULL);
 }
 
+void safe_send(char *command, int rank) {
+	MonoMethod *m, *send_method;
+	void *args[2];
+	
+	while ((m = mono_class_get_methods(class, &iter))) {
+		printf("Method %s\n", mono_method_get_name(m));
+		
+		if (strcmp(mono_method_get_name(m), "commandSend")) {
+			send_method = m;
+			break;
+		}
+	}
+	
+	args[0] = command;
+	args[1] = &rank;
+	
+	mono_runtime_invoke(send_method, NULL, args, NULL);
+}
+
 int main(int argc, char **argv) {
 	pthread_t thread;
 	
@@ -70,6 +89,7 @@ int main(int argc, char **argv) {
 	agc = argc;
 	agv = argv;
 	pthread_create(&thread, NULL, isis_start, NULL);
-	sleep(10000);
+	sleep(20);
+	safe_send("insert li", 10);
 	printf("Here\n");	
 }

@@ -56,6 +56,7 @@ namespace IsisService {
 	  			shardGroup[i].Handlers[INSERT] += (insert)delegate(string command, int rank) {
 	  				if (isVerbose) {
 	  					Console.WriteLine("Got a command {0}", command);
+	  					Console.WriteLine("Rank is {0}", rank);
 	  				}
 	  				
 	  				if (shardGroup[local].GetView().GetMyRank() == rank) {
@@ -105,7 +106,11 @@ namespace IsisService {
 	  		IsisSystem.WaitForever();
 	  	}
 	  	
-	  		  	//Talk to local memcached
+	  	public static void commandSend(string command, int rank) {
+	  		shardGroup[0].Send(INSERT, command, rank);
+	  	}
+	  	
+	  	//Talk to local memcached
 	  	public static string talkToMem(string command, int commandType) {
 	  		TcpClient client = new TcpClient();
 	  		string line = "";
