@@ -31,6 +31,7 @@ void* isis_start() {
 	MonoMethod *m, *mmethod;
 	void *args[3];
 
+	mono_thread_attach(domain);
 	
 	while ((m = mono_class_get_methods(class, &iter))) {
 	    	printf("Method %s\n", mono_method_get_name(m));
