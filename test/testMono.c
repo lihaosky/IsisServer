@@ -65,7 +65,7 @@ void safe_send(char *command, int rank) {
 	while ((m = mono_class_get_methods(class, &iter))) {
 		printf("Method %s\n", mono_method_get_name(m));
 		
-		if (strcmp(mono_method_get_name(m), "commandSend")) {
+		if (strcmp(mono_method_get_name(m), "commandSend") == 0) {
 			send_method = m;
 			break;
 		}
