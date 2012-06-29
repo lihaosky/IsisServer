@@ -24,7 +24,7 @@ namespace IsisService {
 	  	public static int INSERT = 0;
 	  	public static int GET = 1;
 	  	public static bool isVerbose = true;
-	  	public static bool isStarted = false;
+	  	public static int isStarted = 0;
 	  	public static int memPortNum = 9999;
 	  	
 	  	public static void createGroup(int nNum, int sSize, int mRank) {
@@ -103,7 +103,7 @@ namespace IsisService {
 	  			shardGroup[i].Join();
 	  		}
 	  		
-	  		isStarted = true;
+	  		isStarted = 1;
 	  		IsisSystem.WaitForever();
 	  	}
 	  	
@@ -111,7 +111,7 @@ namespace IsisService {
 	  		shardGroup[0].Send(INSERT, command, rank);
 	  	}
 	  	
-	  	public static bool started() {
+	  	public static int started() {
 	  		return isStarted;
 	  	}
 	  	
