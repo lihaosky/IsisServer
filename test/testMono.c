@@ -30,17 +30,7 @@ void *iter;
 void* isis_start() {
 	MonoMethod *m, *mmethod;
 	void *args[3];
-	
-	domain = mono_jit_init(file);
-	mono_config_parse(NULL);
-	assembly = mono_domain_assembly_open(domain, file);
-	if (!assembly) {
-		fprintf(stderr, "Fail to open assembly!\n");
-		exit;
-	}
-	mono_jit_exec(domain, assembly, agc - 1, agv + 1);
-	image = mono_assembly_get_image(assembly);
-	class = mono_class_from_name(image, "IsisService", "IsisServer");
+
 	
 	while ((m = mono_class_get_methods(class, &iter))) {
 	    	printf("Method %s\n", mono_method_get_name(m));
@@ -55,10 +45,10 @@ void* isis_start() {
 	args[1] = &shardSize;
 	args[2] = &myRank;
 	
-	//mono_runtime_invoke(mmethod, NULL, args, NULL);
+	mono_runtime_invoke(mmethod, NULL, args, NULL);
 }
 
-void safe_send(char *command, int rank) {
+void safe_send(const char *command, int rank) {
 	MonoMethod *m, *send_method;
 	MonoString *cmd;
 	void *args[2];
@@ -88,10 +78,19 @@ int main(int argc, char **argv) {
 	}
 	
 	file = argv[1];
-	agc = argc;
-	agv = argv;
+		
+	domain = mono_jit_init(file);
+	mono_config_parse(NULL);
+	assembly = mono_domain_assembly_open(domain, file);
+	if (!assembly) {
+		fprintf(stderr, "Fail to open assembly!\n");
+		exit;
+	}
+	mono_jit_exec(domain, assembly, argc - 1, argv + 1);
+	image = mono_assembly_get_image(assembly);
+	class = mono_class_from_name(image, "IsisService", "IsisServer");
 	pthread_create(&thread, NULL, isis_start, NULL);
-	sleep(20);
+	sleep(10);
 	safe_send("insert li", 10);
 	printf("Here\n");	
 }

@@ -107,9 +107,7 @@ namespace IsisService {
 	  	}
 	  	
 	  	public static void commandSend(string command, int rank) {
-	  		//shardGroup[0].Send(INSERT, command, rank);
-	  		Console.WriteLine(command);
-	  		Console.WriteLine(rank);
+	  		shardGroup[0].Send(INSERT, command, rank);
 	  	}
 	  	
 	  	//Talk to local memcached
