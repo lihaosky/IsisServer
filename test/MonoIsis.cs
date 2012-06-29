@@ -24,7 +24,7 @@ namespace IsisService {
 	  	public static int INSERT = 0;
 	  	public static int GET = 1;
 	  	public static bool isVerbose = true;
-	  	
+	  	public static bool isStarted = false;
 	  	public static int memPortNum = 9999;
 	  	
 	  	public static void createGroup(int nNum, int sSize, int mRank) {
@@ -103,11 +103,16 @@ namespace IsisService {
 	  			shardGroup[i].Join();
 	  		}
 	  		
+	  		isStarted = true;
 	  		IsisSystem.WaitForever();
 	  	}
 	  	
 	  	public static void commandSend(string command, int rank) {
 	  		shardGroup[0].Send(INSERT, command, rank);
+	  	}
+	  	
+	  	public static bool started() {
+	  		return isStarted;
 	  	}
 	  	
 	  	//Talk to local memcached
