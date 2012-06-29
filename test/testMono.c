@@ -55,7 +55,7 @@ void* isis_start() {
 	args[1] = &shardSize;
 	args[2] = &myRank;
 	
-	mono_runtime_invoke(mmethod, NULL, args, NULL);
+	//mono_runtime_invoke(mmethod, NULL, args, NULL);
 }
 
 void safe_send(char *command, int rank) {
