@@ -70,5 +70,6 @@ int main(int argc, char **argv) {
 	agc = argc;
 	agv = argv;
 	pthread_create(&thread, NULL, isis_start, NULL);
+	sleep(10000);
 	printf("Here\n");	
 }
