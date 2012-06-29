@@ -53,6 +53,8 @@ void safe_send(const char *command, int rank) {
 	MonoString *cmd;
 	void *args[2];
 	
+	mono_thread_attach(domain);
+	
 	while ((m = mono_class_get_methods(class, &iter))) {
 		printf("Method %s\n", mono_method_get_name(m));
 		
