@@ -60,6 +60,7 @@ void* isis_start() {
 
 void safe_send(char *command, int rank) {
 	MonoMethod *m, *send_method;
+	MonoString *cmd;
 	void *args[2];
 	
 	while ((m = mono_class_get_methods(class, &iter))) {
@@ -71,7 +72,8 @@ void safe_send(char *command, int rank) {
 		}
 	}
 	
-	args[0] = command;
+	cmd = mono_string_new(domain, command);
+	args[0] = &cmd;
 	args[1] = &rank;
 	
 	mono_runtime_invoke(send_method, NULL, args, NULL);
