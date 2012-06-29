@@ -97,7 +97,9 @@ int main(int argc, char **argv) {
 	result = mono_runtime_invoke(is_started, NULL, NULL, NULL);
 	ret = *(int*)mono_object_unbox(result);
 	printf("return value is %d\n", ret);
+	sleep(3);
 	}
 	safe_send("insert li", 10);
+	sleep(10);
 	printf("Here\n");	
 }
