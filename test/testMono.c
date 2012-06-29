@@ -54,8 +54,6 @@ void safe_send(const char *command, int rank) {
 	MonoString *cmd;
 	void *args[2];
 	
-	mono_thread_attach(domain);
-	
 	while ((m = mono_class_get_methods(class, &iter))) {
 		printf("Method %s\n", mono_method_get_name(m));
 		
@@ -94,6 +92,7 @@ int main(int argc, char **argv) {
 	class = mono_class_from_name(image, "IsisService", "IsisServer");
 	pthread_create(&thread, NULL, isis_start, NULL);
 	sleep(20);
+	printf("After sleep!\n");
 	safe_send("insert li", 10);
 	printf("Here\n");	
 }
