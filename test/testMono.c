@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 	class = mono_class_from_name(image, "IsisService", "IsisServer");
 	pthread_create(&thread, NULL, isis_start, NULL);
 	sleep(20);
-	printf("After sleep!\n");
+	while (1);
 	safe_send("insert li", 10);
 	printf("Here\n");	
 }
