@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 	pthread_t thread;
 	MonoMethod *m;
 	MonoObject *result;
-	int ret;
+	int ret = 0;
 	
 	if (argc < 2) {
 		fprintf(stderr, "Provide an assembly to load!\n");
@@ -93,11 +93,11 @@ int main(int argc, char **argv) {
 	
 	pthread_create(&thread, NULL, isis_start, NULL);
 	
+	while (ret == 0) {
 	result = mono_runtime_invoke(is_started, NULL, NULL, NULL);
 	ret = *(int*)mono_object_unbox(result);
 	printf("return value is %d\n", ret);
-	
-	while (1);
+	}
 	safe_send("insert li", 10);
 	printf("Here\n");	
 }
