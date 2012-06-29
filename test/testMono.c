@@ -72,8 +72,8 @@ void safe_send(char *command, int rank) {
 		}
 	}
 	
-	cmd = mono_string_new(domain, command);
-	args[0] = &cmd;
+	//cmd = mono_string_new(domain, command);
+	args[0] = &command;
 	args[1] = &rank;
 	
 	mono_runtime_invoke(send_method, NULL, args, NULL);
