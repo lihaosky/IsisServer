@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
 	ret = *(int*)mono_object_unbox(result);
 	printf(ret);
 	
-	while (!((int)mono_runtime_invoke(is_started, NULL, NULL, NULL)));
+	while (1);
 	safe_send("insert li", 10);
 	printf("Here\n");	
 }
