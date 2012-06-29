@@ -56,6 +56,7 @@ void safe_send(const char *command, int rank) {
 int main(int argc, char **argv) {
 	pthread_t thread;
 	MonoMethod *m;
+	int ret;
 	
 	if (argc < 2) {
 		fprintf(stderr, "Provide an assembly to load!\n");
@@ -91,9 +92,8 @@ int main(int argc, char **argv) {
 	
 	pthread_create(&thread, NULL, isis_start, NULL);
 	
-	if ((int)(mono_runtime_invoke(is_started, NULL, NULL, NULL))) {
-		printf("started!");
-	}
+	ret = (int)(mono_runtime_invoke(is_started, NULL, NULL, NULL));
+	printf(ret);
 	
 	while (!((int)mono_runtime_invoke(is_started, NULL, NULL, NULL)));
 	safe_send("insert li", 10);
