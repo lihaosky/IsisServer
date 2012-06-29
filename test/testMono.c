@@ -56,6 +56,7 @@ void safe_send(const char *command, int rank) {
 int main(int argc, char **argv) {
 	pthread_t thread;
 	MonoMethod *m;
+	MonoObject *result;
 	int ret;
 	
 	if (argc < 2) {
@@ -92,7 +93,8 @@ int main(int argc, char **argv) {
 	
 	pthread_create(&thread, NULL, isis_start, NULL);
 	
-	ret = (int)(mono_runtime_invoke(is_started, NULL, NULL, NULL));
+	result = mono_runtime_invoke(is_started, NULL, NULL, NULL);
+	ret = *(int*)mono_object_unbox(result);
 	printf(ret);
 	
 	while (!((int)mono_runtime_invoke(is_started, NULL, NULL, NULL)));
