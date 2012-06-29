@@ -90,7 +90,11 @@ int main(int argc, char **argv) {
 	}
 	
 	pthread_create(&thread, NULL, isis_start, NULL);
-
+	
+	if ((int)(mono_runtime_invoke(is_started, NULL, NULL, NULL))) {
+		printf("started!");
+	}
+	
 	while (!((int)mono_runtime_invoke(is_started, NULL, NULL, NULL)));
 	safe_send("insert li", 10);
 	printf("Here\n");	
